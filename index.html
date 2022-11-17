@@ -229,7 +229,7 @@
                 console.log(thisId);
                 $.ajax({
                     type: "GET",
-                    url: `${gAPI}/question/id/${thisId}`,
+                    url: `${gAPI}/question/id/${thisId}:splat 200`,
                     dataType: "json",
                     success: (res) => {
                         $("#edit-modal-id").val(res.id);
@@ -509,7 +509,7 @@
             function reloadQuestion() {
                 $.ajax({
                     type: "GET",
-                    url: `${gAPI}/question/all`,
+                    url: `${gAPI}/question/all:splat 200`,
                     dataType: "json",
                     success: async (res) => {
                         console.log(res);
