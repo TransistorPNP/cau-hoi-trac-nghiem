@@ -1,3 +1,0 @@
-# This rule will redirect
-/elasticbeanstalk/*   http://question-env.eba-es2s4tgm.ap-southeast-1.elasticbeanstalk.com/:splat 200
-
