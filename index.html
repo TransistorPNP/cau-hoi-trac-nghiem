@@ -516,22 +516,17 @@
             //làm mới danh sách câu hỏi
             function reloadQuestion() {
                 $.ajax({
-                    // type: "GET",
+                    type: "GET",
                     url: `${gAPI}/question/all`,
-                    // crossDomain: true,
+                    crossDomain: true,
                     dataType: "jsonp",
-                    // success: async (res) => {
-                    //     console.log(res);
-                    //     gQuestionData = await res;
-                    //     loadToTable(res, gQUESTION_TABLE);
-                    //     loadToSelect(res, $("#sel-q1"));
-                    //     loadToSelect(res, $("#sel-q1-head"));
-                    // }
-                }).done(async (res) => {
-                    gQuestionData = await res;
-                    loadToTable(gQuestionData, gQUESTION_TABLE);
-                    loadToSelect(gQuestionData, $("#sel-q1"));
-                    loadToSelect(gQuestionData, $("#sel-q1-head"));
+                    success: async (res) => {
+                        console.log(res);
+                        gQuestionData = await res;
+                        loadToTable(res, gQUESTION_TABLE);
+                        loadToSelect(res, $("#sel-q1"));
+                        loadToSelect(res, $("#sel-q1-head"));
+                    }
                 })
             }
 
