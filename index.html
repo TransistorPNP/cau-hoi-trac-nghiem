@@ -232,6 +232,7 @@
                     type: "GET",
                     url: `${gAPI}/question/id/${thisId}`,
                     dataType: "json",
+                    crossDomain: true,
                     success: (res) => {
                         $("#edit-modal-id").val(res.id);
                         $("#edit-modal-ma-cau-hoi").val(res.maCauHoi);
@@ -267,6 +268,7 @@
                     type: "PUT",
                     url: `${gAPI}/question/${thisId}`,
                     dataType: "json",
+                    crossDomain: true,
                     data: JSON.stringify(thisUpdate),
                     contentType: "application/json",
                     success: async (res) => {
@@ -287,6 +289,7 @@
                     type: "GET",
                     url: `${gAPI}/answer/id/${thisId}`,
                     dataType: "json",
+                    crossDomain: true,
                     success: (res) => {
                         $("#modalId").val(res.id);
                         $("#modalMaDapAn").val(res.maDapAn);
@@ -320,6 +323,7 @@
                     url: `${gAPI}/answer/id/${thisId}`,
                     dataType: "json",
                     data: JSON.stringify(newAnswer),
+                    crossDomain: true,
                     contentType: "application/json",
                     success: async (res) => {
                         console.log(await res);
@@ -345,6 +349,7 @@
                     $.ajax({
                         method: "DELETE",
                         url: `${gAPI}/question/${thisId}`,
+                        crossDomain: true,
                         success: (data) => {
                             console.log(data);
                             reloadQuestion();
@@ -364,6 +369,7 @@
                     $.ajax({
                         method: "DELETE",
                         url: `${gAPI}/answer/${thisId}`,
+                        crossDomain: true,
                         success: (data) => {
                             console.log(data);
                             reloadAnswer();
@@ -470,6 +476,7 @@
                     type: "POST",
                     url: `${gAPI}/answer/q/${maCauHoi}`,
                     dataType: "json",
+                    crossDomain: true,
                     contentType: "application/json",
                     data: JSON.stringify(newAnswer),
                     success: async (res) => {
@@ -511,6 +518,7 @@
                 $.ajax({
                     type: "GET",
                     url: `${gAPI}/question/all`,
+                    crossDomain: true,
                     dataType: "json",
                     success: async (res) => {
                         console.log(res);
@@ -527,6 +535,7 @@
                 $.ajax({
                     type: "GET",
                     url: `${gAPI}/answer/all`,
+                    crossDomain: true,
                     dataType: "json",
                     success: async (res) => {
                         console.log(res);
