@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="Description" content="Enter your description here" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <title>Đề thi trắc nghiệm</title>
+</head>
+
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Câu hỏi trắc nghiệm, lựa chọn đáp án đúng</h1>
+        <div class="jumbotron">
+            <div class="form-group">
+                <div class="row">
+                    <label for="q1-head" class="col-form-label col-sm-3">Câu hỏi đã có: </label>
+                    <select name="q1-head" id="sel-q1-head" class="form-control col-sm-9">
+                        <option value="0">Lựa chọn câu hỏi</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                <div class="row">
+                    <label for="a1" class="col-form-label col-sm-3">Đáp án: </label>
+                    <select name="a1" id="sel-a1" class="form-control col-sm-9">
+                        <option>Lựa chọn đáp án</option>
+                    </select>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="btn-group col">
+                    <button class="btn btn-outline-success btn-create-question">Câu hỏi mới</button>
+                    <button class="btn btn-outline-success btn-create-answer">Đáp án mới</button>
+                </div>
+                <div class="btn-group col">
+                    <button class="btn btn-outline-info btn-list-question">Danh sách câu hỏi</button>
+                    <button class="btn btn-outline-info btn-list-answer">Danh sách đáp án</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Create question -->
+        <div class="jumbotron d-none" id="div-create-q">
+            <h1 class="text-center mb-5">Tạo câu hỏi</h1>
+            <div class="form-group">
+                <div class="row form-group">
+                    <label for="maCauHoi" class="col-form-label col-sm-3">Mã câu hỏi: <span
+                            class="text-danger">(*)</span></label>
+                    <input type="text" name="maCauHoi" id="maCauHoi" class="form-control col-sm-9">
+                </div>
+                <div class="row form-group">
+                    <label for="noiDung" class="col-form-label col-sm-3">Nội dung: <span
+                            class="text-danger">(*)</span></label>
+                    <textarea type="text" rows="5" id="noiDung" class="form-control col-sm-9"></textarea>
+                </div>
+                <div class="row form-group">
+                    <label for="soDiem" class="col-form-label col-sm-3">Số điểm: <span
+                            class="text-danger">(*)</span></label>
+                    <input type="number" id="soDiem" class="form-control col-sm-9">
+                </div>
+                <div class="row form-group">
+                    <label for="monHoc" class="col-form-label col-sm-3">Môn học:</label>
+                    <input type="text" name="cq1" id="monHoc" class="form-control col-sm-9">
+                </div>
+            </div>
+            <button class="btn btn-success btn-main-create">Tạo mới</button>
+        </div>
+
+        <!-- Create Answer -->
+        <div class="jumbotron d-none" id="div-create-a">
+            <h1 class="text-center mb-5">Tạo đáp án</h1>
+            <div class="form-group">
+                <div class="row form-group">
+                    <label for="maDapAn" class="col-form-label col-sm-3">Mã đáp án: <span
+                            class="text-danger">(*)</span></label>
+                    <input type="text" id="maCauHoiChoDapAn" class="col-sm-2 bg-transparent" disabled />
+                    <input type="text" name="maDapAn" id="maDapAn" class="form-control col-sm-6">
+                </div>
+                <div class="row form-group">
+                    <label for="noiDungDapAn" class="col-form-label col-sm-3">Nội dung: <span
+                            class="text-danger">(*)</span></label>
+                    <textarea type="text" rows="5" id="noiDungDapAn" class="form-control col-sm-9"></textarea>
+                </div>
+                <div class="row form-group">
+                    <label for="dungSai" class="col-form-label col-sm-3">Đúng/Sai:</label>
+                    <select name="dungSai" id="dungSai" class="col-sm-9">
+                        <option value="true">Đúng</option>
+                        <option value="false">Sai</option>
+                    </select>
+                </div>
+                <div class="row form-group">
+                    <label for="giaiThich" class="col-form-label col-sm-3">Giải thích:</label>
+                    <input type="text" id="giaiThich" class="form-control col-sm-9">
+                </div>
+                <div class="row form-group">
+                    <label for="q1" class="col-form-label col-sm-3">Câu hỏi: <span
+                            class="text-danger">(*)</span></label>
+                    <select name="q1" id="sel-q1" class="form-control col-sm-9">
+                        <option value="0">Lựa chọn câu hỏi</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-success btn-main-create-answer">Tạo mới</button>
+        </div>
+
+        <!-- Table Question -->
+        <div class="jumbotron d-none" id="div-table-q">
+            <h1 class="text-center">Danh sách các câu hỏi</h1>
+            <table class="table table-bordered table-striped question-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mã câu hỏi</th>
+                        <th>Môn học</th>
+                        <th>Ngày tạo</th>
+                        <th>Nội dung</th>
+                        <th>Điểm</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Table Answer -->
+        <div class="jumbotron d-none" id="div-table-a">
+            <h1 class="text-center">Danh sách các câu trả lời</h1>
+            <table class="table table-bordered table-active answer-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mã đáp án</th>
+                        <th>Nội dung</th>
+                        <th>Đúng/Sai</th>
+                        <th>Giải thích</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            const gAPI = "http://question-env.eba-es2s4tgm.ap-southeast-1.elasticbeanstalk.com";
+            const gQUESTION_HEADER = ["id", "maCauHoi", "monHoc", "ngayTao", "noiDung", "soDiem", "hanhDong"];
+            const gANSWER_HEADER = ["id", "maDapAn", "noiDungDapAn", "dungSai", "giaiThich", "hanhDong"];
+
+            let gQuestionData = null;
+            let gAnswerData = null;
+
+            const gQUESTION_TABLE = $(".question-table").DataTable({
+                columns: [
+                    {
+                        data: gQUESTION_HEADER[0]
+                    },
+                    {
+                        data: gQUESTION_HEADER[1]
+                    },
+                    {
+                        data: gQUESTION_HEADER[2]
+                    },
+                    {
+                        data: gQUESTION_HEADER[3],
+                        render: (data) => new Date(data).toDateString()
+                    },
+                    {
+                        data: gQUESTION_HEADER[4]
+                    },
+                    {
+                        data: gQUESTION_HEADER[5]
+                    },
+                    {
+                        data: gQUESTION_HEADER[6]
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 6,
+                        defaultContent: `<div class="btn-group p-1">
+                            <button class='btn btn-warning btn-edit-question'>Sửa</button>
+                            <button class='btn btn-danger btn-delete-question'>Xóa</button></div>`
+                    }
+                ]
+            })
+
+            const gANSWER_TABLE = $(".answer-table").DataTable({
+                columns: [
+                    { data: gANSWER_HEADER[0] },
+                    { data: gANSWER_HEADER[1] },
+                    { data: gANSWER_HEADER[2] },
+                    { data: gANSWER_HEADER[3] },
+                    { data: gANSWER_HEADER[4] },
+                    { data: gANSWER_HEADER[5] },
+                ],
+                columnDefs: [
+                    {
+                        targets: 5,
+                        defaultContent: `<div class="btn-group">
+                            <button class='btn btn-warning btn-edit-answer'>Sửa</button>
+                            <button class='btn btn-danger btn-delete-answer'>Xóa</button></div>`
+                    }
+                ]
+            })
+            reloadQuestion();
+            reloadAnswer();
+            //==========================================================//
+
+            //------------EDIT start-----------//
+
+            //On .btn-edit-question click
+            $(document).on("click", ".btn-edit-question", (event) => {
+                let thisId = $(event.target).parents("tr").find("td:eq(0)").text();
+                console.log(thisId);
+                $.ajax({
+                    type: "GET",
+                    url: `${gAPI}/question/id/${thisId}`,
+                    dataType: "json",
+                    success: (res) => {
+                        $("#edit-modal-id").val(res.id);
+                        $("#edit-modal-ma-cau-hoi").val(res.maCauHoi);
+                        $("#edit-modal-mon-hoc").val(res.monHoc);
+                        $("#edit-modal-noi-dung").val(res.noiDung);
+                        $("#edit-modal-diem").val(res.soDiem);
+                    }
+                })
+                $("#edit-modal").modal("show");
+            })
+            $(document).on("click", ".btn-edit-modal-save", () => {
+                //collect
+                let thisUpdate = {
+                    id: $("#edit-modal-id").val(),
+                    maCauHoi: $("#edit-modal-ma-cau-hoi").val(),
+                    monHoc: $("#edit-modal-mon-hoc").val(),
+                    noiDung: $("#edit-modal-noi-dung").val(),
+                    soDiem: $("#edit-modal-diem").val()
+                }
+                //valid
+                if (!thisUpdate.maCauHoi || !thisUpdate.monHoc || !thisUpdate.noiDung || !thisUpdate.soDiem) {
+                    alert("Không được phép bỏ trống các trường")
+                    return
+                }
+                if (Number.isNaN(thisUpdate.soDiem)) {
+                    alert("Số điểm phải là số")
+                    return
+                }
+                let thisId = thisUpdate.id;
+                // console.log(thisUpdate);
+                //process
+                $.ajax({
+                    type: "PUT",
+                    url: `${gAPI}/question/${thisId}`,
+                    dataType: "json",
+                    data: JSON.stringify(thisUpdate),
+                    contentType: "application/json",
+                    success: async (res) => {
+                        console.log(res);
+                        reloadQuestion();
+                        $("#edit-modal").modal("hide");
+                    },
+                    error: (error) => console.log(error)
+                })
+
+            })
+
+            //On .btn-edit-answer click
+            $(document).on("click", ".btn-edit-answer", (event) => {
+                let thisId = $(event.target).parents("tr").find("td:eq(0)").text();
+                // console.log(thisId);
+                $.ajax({
+                    type: "GET",
+                    url: `${gAPI}/answer/id/${thisId}`,
+                    dataType: "json",
+                    success: (res) => {
+                        $("#modalId").val(res.id);
+                        $("#modalMaDapAn").val(res.maDapAn);
+                        $("#modalNoiDung").val(res.noiDungDapAn);
+                        // $("#modalDungSai").attr("value", res.dungSai);
+                        $("#modalGiaiThich").val(res.giaiThich);
+                    }
+                })
+                $("#modal-answer-edit").modal("show");
+            })
+
+            //On btn save at modal edit answer click
+            $(document).on("click", ".btn-save-modal-edit-answer", () => {
+                //collect
+                let newAnswer = {
+                    maDapAn: $("#modalMaDapAn").val(),
+                    noiDung: $("#modalNoiDung").val(),
+                    dungSai: $("#modalDungSai").val(),
+                    giaiThich: $("#modalGiaiThich").val()
+                }
+                let thisId = $("#modalId").val();
+                //valid
+
+                if (!newAnswer.maDapAn || !newAnswer.noiDung) {
+                    alert("Dữ liệu không hợp lệ");
+                    return
+                }
+                //process
+                $.ajax({
+                    type: "PUT",
+                    url: `${gAPI}/answer/id/${thisId}`,
+                    dataType: "json",
+                    data: JSON.stringify(newAnswer),
+                    contentType: "application/json",
+                    success: async (res) => {
+                        console.log(await res);
+                        reloadAnswer();
+                        $("#modal-answer-edit").modal("hide");
+                    },
+                    error: (error) => console.log(error)
+                })
+            })
+
+            //------------EDIT end-----------//
+
+
+            //---------DELETE start---------//
+
+            //On .btn-delete-question click
+            $(document).on("click", ".btn-delete-question", (event) => {
+                let thisId = $(event.target).parents("tr").find("td:eq(0)").text();
+                console.log(thisId);
+                // 
+                if (confirm("Xác nhận xóa câu hỏi này?")) {
+                    console.log("Accept");
+                    $.ajax({
+                        method: "DELETE",
+                        url: `${gAPI}/question/${thisId}`,
+                        success: (data) => {
+                            console.log(data);
+                            reloadQuestion();
+                            $("#modal-confirm-delete").modal("show");
+                        }
+                    })
+                }
+
+            })
+
+            //On .btn-delete-answer click
+            $(document).on("click", ".btn-delete-answer", (event) => {
+                let thisId = $(event.target).parents("tr").find("td:eq(0)").text();
+                console.log(thisId);
+                if (confirm("Xác nhận xóa câu hỏi này?")) {
+                    console.log("Accept");
+                    $.ajax({
+                        method: "DELETE",
+                        url: `${gAPI}/answer/${thisId}`,
+                        success: (data) => {
+                            console.log(data);
+                            reloadAnswer();
+                            $("#modal-confirm-delete").modal("show");
+                        }
+                    })
+                }
+            })
+
+            //----------DELETE end----------//
+
+            //=========START CREATE=========//
+
+            //Create new question btn clicked
+            $(document).on("click", ".btn-create-question", () => {
+                $("#div-create-q").attr("class", "jumbotron d-block");
+                $("#div-create-a").attr("class", "jumbotron d-none");
+                $("#div-table-a").attr("class", "jumbotron d-none");
+                $("#div-table-q").attr("class", "jumbotron d-none");
+
+            })
+
+            //on click create button add new question
+            $(document).on("click", ".btn-main-create", () => {
+
+                //collect
+                let newQuestion = {
+                    maCauHoi: $("#maCauHoi").val(),
+                    monHoc: $("#monHoc").val(),
+                    noiDung: $("#noiDung").val(),
+                    soDiem: $("#soDiem").val()
+                }
+
+                //valid
+                if (!newQuestion.maCauHoi || !newQuestion.monHoc || !newQuestion.noiDung || !newQuestion.soDiem) {
+                    alert("Không được phép bỏ trống các trường")
+                    return
+                }
+                if (Number.isNaN(newQuestion.soDiem)) {
+                    alert("Số điểm phải là số")
+                    return
+                }
+
+                //process
+                $.ajax({
+                    type: "POST",
+                    url: `${gAPI}/question/create`,
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(newQuestion),
+                    success: async (res) => {
+                        console.log(res);
+                        $("#maCauHoi").val("");
+                        $("#monHoc").val("");
+                        $("#noiDung").val("");
+                        $("#soDiem").val("");
+
+                        $("#modal-create-success").modal("show");
+                        $("#span-modal-id").html(`Mã câu hỏi: ${await res.maCauHoi}`);
+                    },
+                    error: (error) => console.log(error)
+                })
+            })
+
+            //Create new answer btn clicked
+            $(document).on("click", ".btn-create-answer", () => {
+                $("#div-create-a").attr("class", "jumbotron d-block");
+                $("#div-create-q").attr("class", "jumbotron d-none");
+                $("#div-table-a").attr("class", "jumbotron d-none");
+                $("#div-table-q").attr("class", "jumbotron d-none");
+                reloadQuestion();
+            })
+
+            //Khi chọn câu hỏi thay đổi( ở mục tạo đáp án)
+            $(document).on("change", "", () => {
+                if ($("#sel-q1").val() === "0") {
+                    $("#maCauHoiChoDapAn").val("");
+                    return;
+                }
+                $("#maCauHoiChoDapAn").val($("#sel-q1").val());
+            })
+
+            //on create button add new answer
+            $(document).on("click", ".btn-main-create-answer", () => {
+                //Collect
+                let newAnswer = {
+                    maDapAn: $("#maCauHoiChoDapAn").val() + $("#maDapAn").val(),
+                    noiDungDapAn: $("#noiDungDapAn").val(),
+                    dungSai: $("#dungSai :selected").val(),
+                    giaiThich: $("#giaiThich").val()
+                }
+                //Valid
+                if (!newAnswer.maDapAn || !newAnswer.noiDungDapAn) {
+                    alert("Trường có dấu * là bắt buộc!")
+                    return
+                }
+                let maCauHoi = $("#sel-q1 :selected").val();
+                if (maCauHoi === "0") {
+                    alert("Chưa chọn câu hỏi cho đáp án này!");
+                    return
+                }
+                //Process
+                $.ajax({
+                    type: "POST",
+                    url: `${gAPI}/answer/q/${maCauHoi}`,
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(newAnswer),
+                    success: async (res) => {
+                        console.log(res);
+                        $("#modal-create-success").modal("show");
+                        $("#span-modal-id").html(`Mã đáp án là: ${await res.maDapAn}`);
+                        $("#maDapAn").val("");
+                        $("#noiDungDapAn").val("");
+                        $("#giaiThich").val("");
+                        reloadAnswer();
+                    },
+                    error: (error) => console.log(error)
+                })
+            })
+
+            //Btn list question clicked
+            $(document).on("click", ".btn-list-question", () => {
+                reloadQuestion();
+                $("#div-create-q").attr("class", "jumbotron d-none");
+                $("#div-create-a").attr("class", "jumbotron d-none");
+                $("#div-table-q").attr("class", "jumbotron d-block");
+                $("#div-table-a").attr("class", "jumbotron d-none");
+            })
+
+            //Btn list answer clicked
+            $(document).on("click", ".btn-list-answer", () => {
+                $("#div-create-q").attr("class", "jumbotron d-none");
+                $("#div-create-a").attr("class", "jumbotron d-none");
+                $("#div-table-q").attr("class", "jumbotron d-none");
+                $("#div-table-a").attr("class", "jumbotron d-block");
+                reloadAnswer();
+            })
+
+
+            //==========================================================//
+
+            //làm mới danh sách câu hỏi
+            function reloadQuestion() {
+                $.ajax({
+                    type: "GET",
+                    url: `${gAPI}/question/all`,
+                    dataType: "json",
+                    success: async (res) => {
+                        console.log(res);
+                        gQuestionData = await res;
+                        loadToTable(res, gQUESTION_TABLE);
+                        loadToSelect(res, $("#sel-q1"));
+                        loadToSelect(res, $("#sel-q1-head"));
+                    }
+                })
+            }
+
+            //Làm mới danh sách đáp án
+            function reloadAnswer() {
+                $.ajax({
+                    type: "GET",
+                    url: `${gAPI}/answer/all`,
+                    dataType: "json",
+                    success: async (res) => {
+                        console.log(res);
+                        gAnswerData = await res;
+                        loadToTable(res, gANSWER_TABLE);
+                    }
+                })
+            }
+
+
+            //Truyền dữ liệu vào ô select
+            function loadToSelect(paramData, paramTarget) {
+                const DEF_OPTION = $("<option>").val("0").html("Lựa chọn câu hỏi");
+                $(paramTarget).html("").append(DEF_OPTION);
+                for (const iterator of paramData) {
+                    $("<option>").val(iterator.maCauHoi).html(iterator.noiDung).appendTo(paramTarget);
+                }
+            }
+
+            //Load data to table
+            function loadToTable(paramData, paramTable) {
+                paramTable.clear();
+                paramTable.rows.add(paramData).draw();
+            }
+        })
+    </script>
+</body>
+
+<!-- MODAL -->
+<!-- Modal edit question -->
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sửa câu hỏi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row form-group">
+                        <label class="col-form-label col-sm-3">ID</label>
+                        <input type="text" class="form-control col-sm-9" disabled id="edit-modal-id" />
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-form-label col-sm-3">Mã câu hỏi</label>
+                        <input type="text" class="form-control col-sm-9" id="edit-modal-ma-cau-hoi" />
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-form-label col-sm-3">Môn học</label>
+                        <input type="text" class="form-control col-sm-9" id="edit-modal-mon-hoc" />
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-form-label col-sm-3">Nội dung</label>
+                        <input type="text" class="form-control col-sm-9" id="edit-modal-noi-dung" />
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-form-label col-sm-3">Số điểm</label>
+                        <input type="number" class="form-control col-sm-9" id="edit-modal-diem" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info btn-edit-modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal DELETE CONFIRM -->
+<div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Xóa thành công</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-warning">
+                <div class="container-fluid">
+                    Dữ liệu đã xóa thành công và không thể hoàn tác
+                </div>
+            </div>
+            <div class="modal-footer bg-warning">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal CREATED -->
+<div class="modal fade" id="modal-create-success" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success">
+                <h5 class="modal-title">Tạo mới thành công</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-success">
+                <div class="container-fluid">
+                    <h4><span id="span-modal-id"></span></h4>
+                </div>
+            </div>
+            <div class="modal-footer bg-success">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal EDIT ANSWER -->
+<div class="modal fade" id="modal-answer-edit" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title">Sửa đáp án</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-info">
+                <div class="container-fluid">
+                    <div class="row form-group">
+                        <label for="modalId" class="col-form-label col-sm-3">ID</label>
+                        <input type="text" id="modalId" class="form-control col-sm-9" disabled />
+                    </div>
+                    <div class="row form-group">
+                        <label for="modalMaDapAn" class="col-form-label col-sm-3">Mã đáp án</label>
+                        <input type="text" id="modalMaDapAn" class="form-control col-sm-9" />
+                    </div>
+                    <div class="row form-group">
+                        <label for="modalNoiDung" class="col-form-label col-sm-3">Nội dung</label>
+                        <input type="text" id="modalNoiDung" class="form-control col-sm-9" />
+                    </div>
+                    <div class="row form-group">
+                        <label for="modalDungSai" class="col-form-label col-sm-3">Đúng/ Sai</label>
+                        <select id="modalDungSai" class="form-control col-sm-9">
+                            <option value='true'>Đúng</option>
+                            <option value='false'>Sai</option>
+                        </select>
+                    </div>
+                    <div class=" row form-group">
+                        <label for="modalGiaiThich" class="col-form-label col-sm-3">Giải thích</label>
+                        <input type="text" id="modalGiaiThich" class="form-control col-sm-9" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-info">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning btn-save-modal-edit-answer">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
