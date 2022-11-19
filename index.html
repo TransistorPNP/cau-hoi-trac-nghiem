@@ -227,7 +227,7 @@
             //On .btn-edit-question click
             $(document).on("click", ".btn-edit-question", (event) => {
                 let thisId = $(event.target).parents("tr").find("td:eq(0)").text();
-                console.log(thisId);
+                // console.log(thisId);
                 $.ajax({
                     type: "GET",
                     url: `${gAPI}/question/id/${thisId}`,
@@ -272,7 +272,7 @@
                     data: JSON.stringify(thisUpdate),
                     contentType: "application/json",
                     success: async (res) => {
-                        console.log(res);
+                        // console.log(res);
                         reloadQuestion();
                         $("#edit-modal").modal("hide");
                     },
@@ -326,8 +326,8 @@
                     crossDomain: true,
                     contentType: "application/json",
                     success: async (res) => {
-                        console.log(await res);
-                        reloadAnswer();
+                        // console.log(await res);
+                        await reloadAnswer();
                         $("#modal-answer-edit").modal("hide");
                     },
                     error: (error) => console.log(error)
@@ -350,9 +350,9 @@
                         method: "DELETE",
                         url: `${gAPI}/question/${thisId}`,
                         crossDomain: true,
-                        success: (data) => {
-                            console.log(data);
-                            reloadQuestion();
+                        success: async (data) => {
+                            // console.log(data);
+                            await reloadQuestion();
                             $("#modal-confirm-delete").modal("show");
                         }
                     })
@@ -371,7 +371,7 @@
                         url: `${gAPI}/answer/${thisId}`,
                         crossDomain: true,
                         success: (data) => {
-                            console.log(data);
+                            // console.log(data);
                             reloadAnswer();
                             $("#modal-confirm-delete").modal("show");
                         }
@@ -421,7 +421,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(newQuestion),
                     success: async (res) => {
-                        console.log(res);
+                        // console.log(res);
                         $("#maCauHoi").val("");
                         $("#monHoc").val("");
                         $("#noiDung").val("");
@@ -480,7 +480,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(newAnswer),
                     success: async (res) => {
-                        console.log(res);
+                        // console.log(res);
                         $("#modal-create-success").modal("show");
                         $("#span-modal-id").html(`Mã đáp án là: ${await res.maDapAn}`);
                         $("#maDapAn").val("");
@@ -521,11 +521,11 @@
                     crossDomain: true,
                     dataType: "jsonp",
                     success: async (res) => {
-                        console.log(res);
+                        // console.log(res);
                         gQuestionData = await res;
-                        loadToTable(res, gQUESTION_TABLE);
-                        loadToSelect(res, $("#sel-q1"));
-                        loadToSelect(res, $("#sel-q1-head"));
+                        loadToTable(gQuestionData, gQUESTION_TABLE);
+                        loadToSelect(gQuestionData, $("#sel-q1"));
+                        loadToSelect(gQuestionData, $("#sel-q1-head"));
                     }
                 })
             }
@@ -538,9 +538,9 @@
                     crossDomain: true,
                     dataType: "json",
                     success: async (res) => {
-                        console.log(res);
+                        // console.log(res);
                         gAnswerData = await res;
-                        loadToTable(res, gANSWER_TABLE);
+                        loadToTable(gAnswerData, gANSWER_TABLE);
                     }
                 })
             }
