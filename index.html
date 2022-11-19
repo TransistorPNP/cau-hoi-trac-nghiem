@@ -519,7 +519,7 @@
                     type: "GET",
                     url: `${gAPI}/question/all`,
                     crossDomain: true,
-                    dataType: "jsonp",
+                    dataType: "json",
                     success: async (res) => {
                         // console.log(res);
                         gQuestionData = await res;
